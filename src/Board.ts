@@ -1,5 +1,6 @@
 import Cell from "./Cell";
 import { dead, alive } from "./CellState";
+import { trimMultiline } from "./Utils";
 
 class Row {
     private _cells: Array<Cell>;
@@ -15,14 +16,14 @@ class Row {
         return new Row([...Array(size)].map(columnIndex => Cell.createDeadCell()))
     }
 
-    public static fromAsciiArt(art: Array<string>): Row {
-        var rawRows = art.map(x => {
+    public static fromAsciiArt(art: string): Row {
+        var row = art.split('').map(x => {
             if (x == 'o') {
                 return new Cell(dead);
             }
             return new Cell(alive);
         });
-        return new Row(rawRows)
+        return new Row(row)
 
     }
 
@@ -56,13 +57,11 @@ class Board {
     }
 
     public static fromAsciiArt(art: string): Board {
-        var parsedRaws = art.split("\n")
-            .filter(x => x.length != 0)
-            .map(x => x.trim())
-            .map(x => x.split(''))
+        var rows = trimMultiline(art)
+            .split('\n')
             .map(x => Row.fromAsciiArt(x));
         
-        return new Board(parsedRaws);
+        return new Board(rows);
     }
 
     public cells(): ReadonlyArray<Cell> {

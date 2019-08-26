@@ -1,4 +1,5 @@
 import GameOfLife from "./GameOfLife"
+import { trimMultiline } from "./Utils";
 
 describe("Game of Life", () => {
     it("it should handle Still lifes pattern like block", () => {
@@ -7,12 +8,12 @@ describe("Game of Life", () => {
             oxxo
             oxxo
             oooo`
-        ).nextGeneration()).toEqual(GameOfLife.fromAsciiArt(`
+        ).nextGeneration().toAsciiArt()).toBe(trimMultiline(`
             oooo
             oxxo
             oxxo
-            oooo`
-        ))
+            oooo
+            `))
     });
 
     it("it should handle Oscillators pattern like blinker", () => {
@@ -22,7 +23,7 @@ describe("Game of Life", () => {
             ooxoo
             ooxoo
             ooooo`
-        ).nextGeneration()).toEqual(GameOfLife.fromAsciiArt(`
+        ).nextGeneration().toAsciiArt()).toBe(trimMultiline(`
             ooooo
             ooooo
             oxxxo
