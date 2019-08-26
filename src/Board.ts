@@ -1,16 +1,29 @@
 import Cell from "./Cell";
+import { dead, alive } from "./CellState";
 
 class Row {
-    readonly rowIndex: number;
-
     private _cells: Array<Cell>;
     get cells() : ReadonlyArray<Cell> {
         return this._cells;
     }
 
-    constructor(size: number, rowIndex: number) {
-        this.rowIndex = rowIndex;
-        this._cells = [...Array(size)].map(columnIndex => Cell.createDeadCell(rowIndex, columnIndex)); 
+    constructor(cells: Array<Cell>) {
+        this._cells = cells;
+    }
+
+    public static create(size: number) {
+        return new Row([...Array(size)].map(columnIndex => Cell.createDeadCell()))
+    }
+
+    public static fromAsciiArt(art: Array<string>): Row {
+        var rawRows = art.map(x => {
+            if (x == 'o') {
+                return new Cell(dead);
+            }
+            return new Cell(alive);
+        });
+        return new Row(rawRows)
+
     }
 
     makeAlive(columnIndex: number): Row {
@@ -20,6 +33,10 @@ class Row {
 
     cellAt(columnIndex: number): Cell {
         return this.cells[columnIndex];
+    }
+
+    public toAsciiArt(): string {
+        return this._cells.map(x => x.isAlive() ? 'x' : 'o').join("");
     }
 }
 
@@ -35,7 +52,17 @@ class Board {
     }
 
     public static create(size: number): Board {
-        return new Board([...Array(size)].map(rowIndex => new Row(size, rowIndex)))
+        return new Board([...Array(size)].map(_ =>  Row.create(size)))
+    }
+
+    public static fromAsciiArt(art: string): Board {
+        var parsedRaws = art.split("\n")
+            .filter(x => x.length != 0)
+            .map(x => x.trim())
+            .map(x => x.split(''))
+            .map(x => Row.fromAsciiArt(x));
+        
+        return new Board(parsedRaws);
     }
 
     public cells(): ReadonlyArray<Cell> {
@@ -50,6 +77,10 @@ class Board {
     
     cellAt(rowIndex: number, columnIndex: number): Cell {
         return this._rows[rowIndex].cellAt(columnIndex);
+    }
+
+    public toAsciiArt(): string {
+        return this._rows.map(x => x.toAsciiArt()).join('\n');
     }
 }
 

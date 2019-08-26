@@ -1,18 +1,14 @@
 import { CellState, dead, alive } from "./CellState";
 
 class Cell {
-    readonly rowIndex: number;
-    readonly columnIndex: number;
     readonly state: CellState;
 
-    constructor(rowIndex: number, columnIndex: number, state: CellState) {
-        this.rowIndex = rowIndex;
-        this.columnIndex = columnIndex;
+    constructor(state: CellState) {
         this.state = state;
     }
 
-    static createDeadCell(rowIndex: number, columnIndex: number) : Cell {
-        return new Cell(rowIndex, columnIndex, dead);
+    static createDeadCell() : Cell {
+        return new Cell(dead);
     }
 
     public isAlive() {
@@ -20,7 +16,7 @@ class Cell {
     } 
 
     public makeAlive() : Cell {
-        return new Cell(this.rowIndex, this.columnIndex, alive);
+        return new Cell(alive);
     } 
 }
 

@@ -16,4 +16,5 @@ describe("board of 3x3", () => {
         const newBoard = board.makeAlive(1,1);
         expect(newBoard.cellAt(1,1).isAlive).toBeTruthy()
     });
+    
 })
