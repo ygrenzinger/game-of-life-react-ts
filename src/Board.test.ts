@@ -2,7 +2,7 @@ import Board from "./Board"
 
 describe("board of 3x3", () => {
 
-    const board = new Board(3);
+    const board = Board.create(3);
     it("board is a 3*3 grid", () => {
         expect(board.rows.length).toBe(3);
         expect(board.cells().length).toBe(9);

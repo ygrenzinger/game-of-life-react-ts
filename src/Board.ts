@@ -1,4 +1,3 @@
-import { CellState, dead } from "./CellState";
 import Cell from "./Cell";
 
 class Row {
@@ -27,12 +26,16 @@ class Row {
 class Board {
     private _rows: Array<Row>;
 
-    get rows() {
+    get rows() : ReadonlyArray<Row> {
         return this._rows;
     }
 
-    constructor(size: number) {
-        this._rows = [...Array(size)].map(rowIndex => new Row(size, rowIndex)); 
+    constructor(rows: Array<Row>) {
+        this._rows = rows; 
+    }
+
+    public static create(size: number): Board {
+        return new Board([...Array(size)].map(rowIndex => new Row(size, rowIndex)))
     }
 
     public cells(): ReadonlyArray<Cell> {
@@ -40,8 +43,9 @@ class Board {
     }
 
     makeAlive(rowIndex: number, columnIndex: number): Board {
-        this._rows[rowIndex] = this._rows[rowIndex].makeAlive(columnIndex);
-        return this;
+        let newRows = Array.from(this._rows);
+        newRows[rowIndex] = newRows[rowIndex].makeAlive(columnIndex);
+        return new Board(newRows);
     }
     
     cellAt(rowIndex: number, columnIndex: number): Cell {
