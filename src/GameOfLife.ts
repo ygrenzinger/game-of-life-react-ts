@@ -15,6 +15,7 @@ class GameOfLife {
     }
 
     public nextGeneration(): GameOfLife {
+        
         return this;
     }
 }
