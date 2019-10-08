@@ -12,8 +12,7 @@ describe("Game of Life", () => {
             oooo
             oxxo
             oxxo
-            oooo
-            `))
+            oooo`))
     });
 
     it("it should handle Oscillators pattern like blinker", () => {

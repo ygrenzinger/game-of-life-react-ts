@@ -5,22 +5,14 @@ export interface CellState {
 
 export const alive : CellState = {
     isAlive: true,
-    nextGeneration: (nbOAliveNeighbors: number) : CellState => {
-        if (nbOAliveNeighbors == 2 || nbOAliveNeighbors == 3 ) {
-            return alive;
-        }
-        return dead
-    }
+    nextGeneration: (nbOAliveNeighbors: number): CellState => 
+        (nbOAliveNeighbors == 2 || nbOAliveNeighbors == 3 ) ? alive : dead
 }
 
 export const dead : CellState = {
     isAlive: false,
-    nextGeneration: (nbOAliveNeighbors: number) : CellState => {
-        if (nbOAliveNeighbors == 3 ) {
-            return alive;
-        }
-        return dead;
-    }
+    nextGeneration: (nbOAliveNeighbors: number) : CellState => 
+        (nbOAliveNeighbors == 3 ) ? alive : dead
 }
 
 export const isAlive = (cellState: CellState, nbOAliveNeighbors: number): boolean => {
