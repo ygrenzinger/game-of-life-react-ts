@@ -12,8 +12,8 @@ class Row {
         this._cells = cells;
     }
 
-    public static create(size: number) {
-        return new Row([...Array(size)].map(columnIndex => Cell.createDeadCell()))
+    public static create(size: number, cellState = dead) {
+        return new Row([...Array(size)].map(columnIndex => Cell.create(cellState)))
     }
 
     public static fromAsciiArt(art: string): Row {
@@ -52,8 +52,8 @@ class Board {
         this._rows = rows; 
     }
 
-    public static create(size: number): Board {
-        return new Board([...Array(size)].map(_ =>  Row.create(size)))
+    public static create(size: number, cellState = dead): Board {
+        return new Board([...Array(size)].map(_ =>  Row.create(size, cellState)))
     }
 
     public static fromAsciiArt(art: string): Board {
@@ -76,6 +76,16 @@ class Board {
     
     cellAt(rowIndex: number, columnIndex: number): Cell {
         return this._rows[rowIndex].cellAt(columnIndex);
+    }
+
+    computeNumberOfAliveNeigbours(rowIndex: number, columnIndex: number): number {
+        const shifts = [-1,0,1]
+        return shifts
+            .flatMap(i => shifts.map(j => [i, j]))
+            .map(([i,j]) => [rowIndex+i,columnIndex+j])
+            .filter(([i,j]) => !(i == rowIndex && j == columnIndex))
+            .filter(([i,j]) => this.cellAt(i,j).isAlive())
+            .length
     }
 
     public toAsciiArt(): string {

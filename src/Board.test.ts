@@ -1,4 +1,5 @@
 import Board from "./Board"
+import { alive } from "./CellState";
 
 describe("board of 3x3", () => {
 
@@ -16,5 +17,10 @@ describe("board of 3x3", () => {
         const newBoard = board.makeAlive(1,1);
         expect(newBoard.cellAt(1,1).isAlive).toBeTruthy()
     });
+
+    it("compute the number of neighbours for a grid of size 1", () => {
+        const newBoard = Board.create(3, alive);
+        expect(newBoard.computeNumberOfAliveNeigbours(1,1)).toBe(8);
+    })
     
 })

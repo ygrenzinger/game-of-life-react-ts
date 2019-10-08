@@ -7,8 +7,8 @@ class Cell {
         this.state = state;
     }
 
-    static createDeadCell() : Cell {
-        return new Cell(dead);
+    static create(cellState = dead) : Cell {
+        return new Cell(cellState);
     }
 
     public isAlive() {
