@@ -1,5 +1,5 @@
 import { Eq } from "fp-ts/lib/Eq";
-import { insert, elem, chain } from "fp-ts/Set";
+import { insert, elem, chain, remove } from "fp-ts/Set";
 import { pipe } from "fp-ts/function";
 import { CellState, computeNextState } from "./CellState";
 
@@ -10,6 +10,15 @@ export class Position {
     this.rowIndex = rowIndex;
     this.columnIndex = columnIndex;
   }
+
+  toString = (): string => {
+    return `${this.rowIndex}-${this.columnIndex}`;
+  };
+
+  static parse = (s: string): Position => {
+    const parsed = s.split("-");
+    return new Position(parseInt(parsed[0]), parseInt(parsed[1]));
+  };
 }
 
 const eqPoint: Eq<Position> = {
@@ -52,6 +61,19 @@ export class GameOfLife {
   makeAliveCellAt(position: Position): GameOfLife {
     const aliveCells = insert(eqPoint)(position)(this.aliveCells);
     return new GameOfLife(this.size, aliveCells);
+  }
+
+  makeDeadCellAt(position: Position): GameOfLife {
+    const aliveCells = remove(eqPoint)(position)(this.aliveCells);
+    return new GameOfLife(this.size, aliveCells);
+  }
+
+  switchStateAt(position: Position): GameOfLife {
+    if (this.isAliveAt(position)) {
+      return this.makeDeadCellAt(position);
+    } else {
+      return this.makeAliveCellAt(position);
+    }
   }
 
   nextGeneration(): GameOfLife {
