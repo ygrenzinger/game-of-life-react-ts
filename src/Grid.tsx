@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { GameOfLife, Position } from "./GameOfLife";
 import { CellState } from "./CellState";
 
@@ -10,7 +10,6 @@ type CellProps = {
 
 const Cell = (props: CellProps) => {
   const { state, position, handleClick } = props;
-  const { rowIndex, columnIndex } = position;
   return (
     <div
       className={state}
@@ -23,11 +22,25 @@ const Cell = (props: CellProps) => {
 
 type GridProps = {
   size: number;
+  random: boolean;
+  generationCount: number;
 };
-const Grid = (props: GridProps) => {
-  const { size } = props;
+const Grid = ({ size, random }: GridProps) => {
+  const [gameOfLife, setGameOfLife] = useState(() =>
+    GameOfLife.of(size, random)
+  );
 
-  const [gameOfLife, setGameOfLife] = useState(GameOfLife.of(size));
+  function nextGeneration() {
+    const next = gameOfLife.nextGeneration();
+    setGameOfLife(next);
+  }
+
+  useEffect(() => {
+    const generatorId = setInterval(nextGeneration, 1000);
+    return function cleanup() {
+      clearInterval(generatorId);
+    };
+  }, [gameOfLife]);
 
   const handleCellClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     const id = event.currentTarget.id;

@@ -2,9 +2,14 @@
   display: inline-grid;
   grid-template-columns: repeat(var(--grid-size), 20px);
 }
+
 #grid > div {
   border: 1px dotted black;
   width: 20px;
   height: 20px;
   background-color: white;
+}
+
+#grid > div.alive {
+  background-color: black;
 }

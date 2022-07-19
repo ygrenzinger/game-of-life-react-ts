@@ -46,8 +46,18 @@ export class GameOfLife {
     this.aliveCells = aliveCells;
   }
 
-  static of(size: number): GameOfLife {
-    return new GameOfLife(size, new Set<Position>());
+  static of(size: number, random: boolean = false): GameOfLife {
+    let aliveCells: Position[] = [];
+    if (random) {
+      for (let i = 0; i < size; i++) {
+        for (let j = 0; j < size; j++) {
+          if (Math.floor(Math.random() * 2) % 2 == 1) {
+            aliveCells.push(new Position(i, j));
+          }
+        }
+      }
+    }
+    return new GameOfLife(size, new Set<Position>(aliveCells));
   }
 
   isAliveAt(position: Position): boolean {
