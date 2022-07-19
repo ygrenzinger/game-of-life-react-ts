@@ -1,21 +1,14 @@
 import { useState } from 'react'
 import logo from './logo.svg'
 import './App.css'
+import Grid from './Grid'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [size, setSize] = useState(3)
 
   return (
-    <div id="grid" className="wrapper">
-      <div className="cell"></div>
-      <div className="cell"></div>
-      <div className="cell"></div>
-      <div className="cell"></div>
-      <div className="cell"></div>
-      <div className="cell"></div>
-      <div className="cell"></div>
-      <div className="cell"></div>
-      <div className="cell"></div>
+    <div>
+      <Grid size={30}></Grid>
     </div>
   )
 }

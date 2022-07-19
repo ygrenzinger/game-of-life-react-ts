@@ -1,14 +1,9 @@
 #grid {
-  min-height: 10px;
-  min-width: 10px;
-  display: grid;
-  grid-template-columns: repeat(3, 22px);
-  gap: 2px 2px;
+  display: inline-grid;
+  grid-template-columns: repeat(var(--grid-size), 20px);
 }
 #grid > div {
-  border: 1px solid black;
-  margin: 1px;
-  box-sizing: border-box;
+  border: 1px dotted black;
   width: 20px;
   height: 20px;
   background-color: white;
