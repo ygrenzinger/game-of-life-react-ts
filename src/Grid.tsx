@@ -22,33 +22,30 @@ const Cell = (props: CellProps) => {
 
 type GridProps = {
   size: number;
-  random: boolean;
-  generationCount: number;
+  randomInit: boolean;
+  generation: number;
 };
-const Grid = ({ size, random }: GridProps) => {
-  const [gameOfLife, setGameOfLife] = useState(() =>
-    GameOfLife.of(size, random)
-  );
-
-  function nextGeneration() {
-    const next = gameOfLife.nextGeneration();
-    setGameOfLife(next);
-  }
+const Grid = ({ size, randomInit, generation }: GridProps) => {
+  const [gameOfLife, setGameOfLife] = useState(GameOfLife.of(size, randomInit));
 
   useEffect(() => {
-    const generatorId = setInterval(nextGeneration, 1000);
-    return function cleanup() {
-      clearInterval(generatorId);
-    };
-  }, [gameOfLife]);
+    setGameOfLife(GameOfLife.of(size, randomInit));
+  }, [size]);
 
-  const handleCellClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  useEffect(() => {
+    console.log("next Generation effect");
+    const next = gameOfLife.nextGeneration();
+    setGameOfLife(next);
+  }, [generation]);
+
+  const handleCellClick = (event: React.MouseEvent<HTMLElement>) => {
     const id = event.currentTarget.id;
     const position = Position.parse(id);
     setGameOfLife(gameOfLife.switchStateAt(position));
   };
 
   const generateCells = () => {
+    console.log("generate Cells");
     const cells = [];
     for (let rowIndex = 0; rowIndex < size; rowIndex++) {
       for (let columnIndex = 0; columnIndex < size; columnIndex++) {
