@@ -56,4 +56,17 @@ describe("suite", () => {
     expect(next.isAliveAt(new Position(1, 1))).toBeTruthy();
     expect(next.isAliveAt(new Position(2, 1))).toBeTruthy();
   });
+
+  it("should create a grid with random alive cells", async () => {
+    const randomGameOfLife = GameOfLife.of(10, true);
+    let aliveCells = 0;
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        if (randomGameOfLife.isAliveAt(new Position(i, j))) {
+          aliveCells++;
+        }
+      }
+    }
+    expect(aliveCells).toBeGreaterThan(0);
+  });
 });

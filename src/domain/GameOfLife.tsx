@@ -38,8 +38,8 @@ export class GameOfLife {
     [1, 1],
   ];
 
+  readonly size: number;
   private aliveCells: Set<Position>;
-  private size: number;
 
   constructor(size: number, aliveCells: Set<Position>) {
     this.size = size;
