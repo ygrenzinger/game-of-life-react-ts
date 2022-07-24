@@ -1,14 +1,16 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import Game from "./component/Game";
 
 function App() {
   const [size, setSize] = useState(10);
-  const [gridSize, setGridSize] = useState(size);
 
-  const handleSubmit = (event: React.MouseEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setGridSize(size);
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const size = parseInt(
+      (e.currentTarget.elements.namedItem("size") as HTMLInputElement).value
+    );
+    setSize(size);
   };
 
   return (
@@ -16,16 +18,12 @@ function App() {
       <form onSubmit={handleSubmit}>
         <label>
           Size:
-          <input
-            type="number"
-            value={size}
-            onChange={(e) => setSize(parseInt(e.target.value))}
-          />
+          <input type="number" name="size" defaultValue={size} />
         </label>
         <input type="submit" value="Create" />
       </form>
       <div>
-        <Game size={gridSize} random={true}></Game>
+        <Game size={size} random={true}></Game>
       </div>
     </div>
   );

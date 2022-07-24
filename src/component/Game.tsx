@@ -27,7 +27,6 @@ function Game(props: GameProps) {
   let generatorId: NodeJS.Timer;
 
   useInterval(() => {
-    console.log("gameOfLife.nextGeneration");
     if (running) {
       const next = gameOfLife.nextGeneration();
       setGameOfLife(next);
