@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import React from "react";
 import "@testing-library/jest-dom";
 import Game from "./Game";
 
@@ -13,7 +14,7 @@ describe("Game of Life UI", () => {
   });
 
   test("should switch cell state on clicking on it", async () => {
-    render(<Game random={false} size={3}></Game>);
+    render(<Game random={false} size={3} />);
 
     const cell = screen.getByTestId("1-1");
     expect(cell).toHaveClass("dead");
@@ -24,7 +25,7 @@ describe("Game of Life UI", () => {
   });
 
   test("should make game alive and move to next generation", async () => {
-    render(<Game random={false} size={3}></Game>);
+    render(<Game random={false} size={3} />);
     fireEvent.click(screen.getByTestId("1-0"));
     expect(screen.getByTestId("1-0")).toHaveClass("alive");
     fireEvent.click(screen.getByTestId("1-1"));

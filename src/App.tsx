@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import Game from "./component/Game";
 
@@ -7,23 +7,24 @@ function App() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const size = parseInt(
-      (e.currentTarget.elements.namedItem("size") as HTMLInputElement).value
+    const newSize = parseInt(
+      (e.currentTarget.elements.namedItem("size") as HTMLInputElement).value,
+      10
     );
-    setSize(size);
+    setSize(newSize);
   };
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <label>
+        <label htmlFor="name">
           Size:
           <input type="number" name="size" defaultValue={size} />
         </label>
         <input type="submit" value="Create" />
       </form>
       <div>
-        <Game size={size} random={true}></Game>
+        <Game size={size} random />
       </div>
     </div>
   );

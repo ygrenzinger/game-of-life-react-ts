@@ -23,7 +23,7 @@ describe("Cell State rules", () => {
 
   it("Any dead cell without exactly three live neighbours stays dead", async () => {
     [...Array(8).keys()]
-      .filter((n) => n != 3)
+      .filter((n) => n !== 3)
       .forEach((n) => {
         expect(computeNextState("dead", n)).toBe("dead");
       });

@@ -2,31 +2,14 @@ import { Eq } from "fp-ts/lib/Eq";
 import { insert, elem, chain, remove } from "fp-ts/Set";
 import { pipe } from "fp-ts/function";
 import { CellState, computeNextState } from "./CellState";
-
-export class Position {
-  readonly rowIndex: number;
-  readonly columnIndex: number;
-  constructor(rowIndex: number, columnIndex: number) {
-    this.rowIndex = rowIndex;
-    this.columnIndex = columnIndex;
-  }
-
-  toString = (): string => {
-    return `${this.rowIndex}-${this.columnIndex}`;
-  };
-
-  static parse = (s: string): Position => {
-    const parsed = s.split("-");
-    return new Position(parseInt(parsed[0]), parseInt(parsed[1]));
-  };
-}
+import Position from "./Position";
 
 const eqPoint: Eq<Position> = {
   equals: (p1, p2) =>
     p1.rowIndex === p2.rowIndex && p1.columnIndex === p2.columnIndex,
 };
 
-export class GameOfLife {
+export default class GameOfLife {
   private static neighbourShifts = [
     [-1, -1],
     [-1, 0],
@@ -39,6 +22,7 @@ export class GameOfLife {
   ];
 
   readonly size: number;
+
   private aliveCells: Set<Position>;
 
   constructor(size: number, aliveCells: Set<Position>) {
@@ -47,11 +31,11 @@ export class GameOfLife {
   }
 
   static of(size: number, random: boolean = false): GameOfLife {
-    let aliveCells: Position[] = [];
+    const aliveCells: Position[] = [];
     if (random) {
       for (let i = 0; i < size; i++) {
         for (let j = 0; j < size; j++) {
-          if (Math.floor(Math.random() * 2) % 2 == 1) {
+          if (Math.floor(Math.random() * 2) % 2 === 1) {
             aliveCells.push(new Position(i, j));
           }
         }
@@ -81,36 +65,34 @@ export class GameOfLife {
   switchStateAt(position: Position): GameOfLife {
     if (this.isAliveAt(position)) {
       return this.makeDeadCellAt(position);
-    } else {
-      return this.makeAliveCellAt(position);
     }
+    return this.makeAliveCellAt(position);
   }
 
   nextGeneration(): GameOfLife {
     let next = GameOfLife.of(this.size);
     const posToEvaluate = this.aliveCellWithNeighbours();
-    for (const pos of posToEvaluate) {
+    posToEvaluate.forEach((pos) => {
       const numbersOfAliveNeighbours = this.numbersOfAliveNeighbours(pos);
       const cellState = this.cellStateAt(pos);
       const nextState = computeNextState(cellState, numbersOfAliveNeighbours);
-      if (nextState == "alive") {
+      if (nextState === "alive") {
         next = next.makeAliveCellAt(pos);
       }
-    }
+    });
     return next;
   }
 
-  toString = (): string => {
-    return Array.from(Array(this.size).keys())
+  toString = (): string =>
+    Array.from(Array(this.size).keys())
       .map((rowIndex) => this.printLine(rowIndex))
       .join("\n");
-  };
 
   private isInsideGrid(position: Position) {
     return (
-      0 <= position.rowIndex &&
+      position.rowIndex >= 0 &&
       position.rowIndex < this.size &&
-      0 <= position.columnIndex &&
+      position.columnIndex >= 0 &&
       position.columnIndex < this.size
     );
   }
@@ -156,9 +138,8 @@ export class GameOfLife {
       .map((colIndex) => {
         if (this.isAliveAt(new Position(rowIndex, colIndex))) {
           return "X";
-        } else {
-          return "_";
         }
+        return "_";
       })
       .join("");
   }

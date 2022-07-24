@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useInterval } from "usehooks-ts";
-import { GameOfLife, Position } from "../domain/GameOfLife";
+import GameOfLife from "../domain/GameOfLife";
+import Position from "../domain/Position";
 import Grid from "./Grid";
 
 type GameProps = {
@@ -16,15 +17,13 @@ function Game(props: GameProps) {
 
   useEffect(() => {
     setGameOfLife(GameOfLife.of(size, random));
-  }, [size]);
+  }, [size, random]);
 
   const handleCellClick = (event: React.MouseEvent<HTMLElement>) => {
-    const id = event.currentTarget.id;
+    const { id } = event.currentTarget;
     const position = Position.parse(id);
     setGameOfLife(gameOfLife.switchStateAt(position));
   };
-
-  let generatorId: NodeJS.Timer;
 
   useInterval(() => {
     if (running) {
@@ -40,12 +39,12 @@ function Game(props: GameProps) {
   return (
     <div>
       <div>
-        <button data-testid="run" onClick={switchRun}>
+        <button type="button" data-testid="run" onClick={switchRun}>
           {running ? "stop" : "start"}
         </button>
       </div>
       <div>
-        <Grid gameOfLife={gameOfLife} handleCellClick={handleCellClick}></Grid>
+        <Grid gameOfLife={gameOfLife} handleCellClick={handleCellClick} />
       </div>
     </div>
   );

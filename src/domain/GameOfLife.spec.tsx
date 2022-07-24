@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { GameOfLife, Position } from "./GameOfLife";
+import GameOfLife from "./GameOfLife";
+import Position from "./Position";
 
 describe("suite", () => {
   let gameOfLife: GameOfLife;
@@ -18,9 +19,7 @@ describe("suite", () => {
     expect(gameOfLife.isAliveAt(pos)).toBeTruthy();
   });
 
-  const removeWhitespace = (grid: string): string => {
-    return grid.replaceAll(" ", "");
-  };
+  const removeWhitespace = (grid: string): string => grid.replaceAll(" ", "");
 
   it("should print grid", async () => {
     gameOfLife = gameOfLife.makeAliveCellAt(new Position(1, 1));
@@ -63,7 +62,7 @@ describe("suite", () => {
     for (let i = 0; i < 10; i++) {
       for (let j = 0; j < 10; j++) {
         if (randomGameOfLife.isAliveAt(new Position(i, j))) {
-          aliveCells++;
+          aliveCells += 1;
         }
       }
     }

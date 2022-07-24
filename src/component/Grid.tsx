@@ -1,5 +1,7 @@
-import { GameOfLife, Position } from "../domain/GameOfLife";
+import React from "react";
 import { CellState } from "../domain/CellState";
+import GameOfLife from "../domain/GameOfLife";
+import Position from "../domain/Position";
 
 type CellProps = {
   state: CellState;
@@ -7,23 +9,24 @@ type CellProps = {
   handleCellClick: (event: any) => void;
 };
 
-const Cell = (props: CellProps) => {
+function Cell(props: CellProps) {
   const { state, position, handleCellClick } = props;
   return (
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
     <div
       className={state}
       data-testid={position.toString()}
       id={position.toString()}
       onClick={handleCellClick}
-    ></div>
+    />
   );
-};
+}
 
 type GridProps = {
   gameOfLife: GameOfLife;
   handleCellClick: (event: any) => void;
 };
-const Grid = ({ gameOfLife, handleCellClick }: GridProps) => {
+function Grid({ gameOfLife, handleCellClick }: GridProps) {
   const generateCells = () => {
     const cells = [];
     for (let rowIndex = 0; rowIndex < gameOfLife.size; rowIndex++) {
@@ -36,7 +39,7 @@ const Grid = ({ gameOfLife, handleCellClick }: GridProps) => {
             position={position}
             state={state}
             handleCellClick={handleCellClick}
-          ></Cell>
+          />
         );
       }
     }
@@ -50,6 +53,6 @@ const Grid = ({ gameOfLife, handleCellClick }: GridProps) => {
       {generateCells()}
     </div>
   );
-};
+}
 
 export default Grid;
